@@ -3,39 +3,47 @@ const BASE_URL = "https://api.hnpwa.com/v0";
 const NEWS_URL = `${BASE_URL}/news/1.json`;
 const ITEMS_URL = (id) => `${BASE_URL}/item/${id}.json`;
 
+const app = document.getElementById("app");
+
+window.addEventListener("hashchange", () => getNewsItem());
+
 function getData(url) {
   ajax.open("get", url, false);
   ajax.send();
   return JSON.parse(ajax.response);
 }
 
-const newFeeds = getData(NEWS_URL);
+function getNewsList() {
+  const newsFeeds = getData(NEWS_URL);
+  const result = [];
 
-const app = document.getElementById("app");
-const container = document.createElement("div");
-const ul = document.createElement("ul");
+  result.push("<ul>");
+  newsFeeds.forEach((feed) => {
+    const list = `<li>
+    <a href="#${feed.id}">
+      ${feed.title} (${feed.comments_count})
+    </a>
+    </li>`;
 
-window.addEventListener("hashchange", () => {
+    result.push(list);
+  });
+  result.push("</ul>");
+
+  return result;
+}
+
+function getNewsItem() {
   const id = window.location.hash.substring(1);
-  const content = getData(ITEMS_URL(id));
+  const item = getData(ITEMS_URL(id));
 
-  const h2 = document.createElement("h2");
-  h2.innerText = content.title;
-
-  container.appendChild(h2);
-});
-
-const contents = newFeeds.forEach((feed) => {
-  const div = document.createElement("div");
-
-  div.innerHTML = `
-  <li>
-    <a href="#${feed.id}">${feed.title} (${feed.comments_count})</a>
-  </li>
+  const html = `
+  <h1>${item.title}</h1>
+  <div>
+    <a href="#">목록으로</a>
+  </div>
   `;
 
-  ul.appendChild(div.firstElementChild);
-});
+  app.innerHTML = html;
+}
 
-app.appendChild(ul);
-app.appendChild(container);
+app.innerHTML = getNewsList().join("");
