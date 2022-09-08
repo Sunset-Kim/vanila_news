@@ -1,41 +1,45 @@
-const ajax = new XMLHttpRequest();
-const BASE_URL = "https://api.hnpwa.com/v0";
-const NEWS_URL = `${BASE_URL}/news/1.json`;
-const ITEMS_URL = (id) => `${BASE_URL}/item/${id}.json`;
+import Ajax from "./services/ajax";
+import HackerAPIService from "./services/hackerAPI";
 
-function getData(url) {
-  ajax.open("get", url, false);
-  ajax.send();
-  return JSON.parse(ajax.response);
+function render(template, dom) {
+  dom.innerHTML = template;
 }
 
-const newFeeds = getData(NEWS_URL);
-
 const app = document.getElementById("app");
-const container = document.createElement("div");
-const ul = document.createElement("ul");
+const hackerAPI = new HackerAPIService(new Ajax());
 
-window.addEventListener("hashchange", () => {
-  const id = window.location.hash.substring(1);
-  const content = getData(ITEMS_URL(id));
+window.addEventListener("DOMContentLoaded", async () => {
+  const newsfeeds = await hackerAPI.getNewsfeeds();
 
-  const h2 = document.createElement("h2");
-  h2.innerText = content.title;
+  const result = [];
+  result.push("<ul>");
 
-  container.appendChild(h2);
+  newsfeeds.forEach((feed) => {
+    result.push(`
+      <li>
+        <a href="#${feed.id}">
+          ${feed.title} (${feed.comments_count})
+        </a>
+      </li>
+      `);
+  });
+
+  result.push("</ul>");
+
+  render(result.join(""), app);
 });
 
-const contents = newFeeds.forEach((feed) => {
-  const div = document.createElement("div");
+window.addEventListener("hashchange", async () => {
+  const id = location.hash.substring(1);
 
-  div.innerHTML = `
-  <li>
-    <a href="#${feed.id}">${feed.title} (${feed.comments_count})</a>
-  </li>
+  const newsItem = await hackerAPI.getNewsItem(id);
+
+  console.log(newsItem);
+
+  const template = `
+    <h1>${newsItem.title}</h1>
+    <a href="/">목록으로</a>
   `;
 
-  ul.appendChild(div.firstElementChild);
+  render(template, app);
 });
-
-app.appendChild(ul);
-app.appendChild(container);
