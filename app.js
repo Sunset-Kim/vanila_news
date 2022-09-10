@@ -1,45 +1,16 @@
-import Ajax from "./services/ajax";
-import HackerAPIService from "./services/hackerAPI";
+import HashRouter from "./router/router";
+import { routes } from "./router/routes_path";
 
-function render(template, dom) {
-  dom.innerHTML = template;
+const root = document.getElementById("app");
+
+const router = new HashRouter(routes, root);
+
+const hash = location.hash;
+
+console.log(hash ? true : false);
+
+if (hash) {
+  router.render("/" + hash.replace("#", ""));
+} else {
+  router.render("/");
 }
-
-const app = document.getElementById("app");
-const hackerAPI = new HackerAPIService(new Ajax());
-
-window.addEventListener("DOMContentLoaded", async () => {
-  const newsfeeds = await hackerAPI.getNewsfeeds();
-
-  const result = [];
-  result.push("<ul>");
-
-  newsfeeds.forEach((feed) => {
-    result.push(`
-      <li>
-        <a href="#${feed.id}">
-          ${feed.title} (${feed.comments_count})
-        </a>
-      </li>
-      `);
-  });
-
-  result.push("</ul>");
-
-  render(result.join(""), app);
-});
-
-window.addEventListener("hashchange", async () => {
-  const id = location.hash.substring(1);
-
-  const newsItem = await hackerAPI.getNewsItem(id);
-
-  console.log(newsItem);
-
-  const template = `
-    <h1>${newsItem.title}</h1>
-    <a href="/">목록으로</a>
-  `;
-
-  render(template, app);
-});

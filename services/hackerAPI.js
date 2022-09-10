@@ -1,3 +1,5 @@
+import Ajax from "./ajax";
+
 class HackerAPIService {
   #BASE_URL = "https://api.hnpwa.com/v0";
   #NEWS_URL = `${this.#BASE_URL}/news/1.json`;
@@ -16,4 +18,4 @@ class HackerAPIService {
   }
 }
 
-export default HackerAPIService;
+export default new HackerAPIService(new Ajax());
