@@ -1,23 +1,22 @@
-import { routes } from "./routes_path";
+import Detail from "../pages/Detail";
+import Home from "../pages/Home";
 
 export default class HashRouter {
-  /**
-   *
-   * @param {pathlist} key: string, value: html iteral
-   * @param {container} domElement
-   */
-  constructor(pathlist, container) {
-    this.pathlist = pathlist;
+  constructor(container) {
     this.container = container;
 
     window.addEventListener("hashchange", () => {
-      const path = window.location.hash.replace("#", "");
-
-      this.render(path, this.container);
+      this.render(location.hash, this.container);
     });
   }
 
-  async render(path, dom = this.container) {
-    dom.innerHTML = (await this.pathlist[path]) || this.pathlist[404];
+  async render(path = "/", dom = this.container) {
+    const slug = path.split("/");
+
+    if (!slug[1]) {
+      dom.innerHTML = await Home();
+    } else if (slug[1] === "news") {
+      dom.innerHTML = await Detail(slug[2]);
+    }
   }
 }

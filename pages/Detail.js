@@ -1,8 +1,6 @@
 import hackerAPI from "../services/hackerAPI";
 
-export default async function Detail() {
-  console.log("item");
-  const id = location.hash.replace("#", "");
+export default async function Detail(id) {
   const newsItem = await hackerAPI.getNewsItem(id);
 
   return `

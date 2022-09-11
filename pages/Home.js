@@ -12,7 +12,7 @@ export default async function Home() {
     newsfeeds.forEach((feed) => {
       result.push(`
       <li>
-        <a href="#${feed.id}">
+        <a href="#/news/${feed.id}">
           ${feed.title} (${feed.comments_count})
         </a>
       </li>
