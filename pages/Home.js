@@ -1,10 +1,19 @@
 import HackerAPIService from "../services/hackerAPI";
+import { store } from "../store/store";
 
 const hackerAPI = HackerAPIService;
 
-export default async function Home() {
+export default async function Home(page) {
+  const currentPage = Number(location.hash.split("/")[2]) || 1;
+
+  store.setState({
+    currentPage,
+  });
+
+  console.log(store.state);
+
   try {
-    const newsfeeds = await hackerAPI.getNewsfeeds();
+    const newsfeeds = await hackerAPI.getNewsfeeds(page);
 
     const result = [];
     result.push("<ul>");
@@ -20,6 +29,13 @@ export default async function Home() {
     });
 
     result.push("</ul>");
+
+    result.push(`
+    <div>
+      <a href="#/page/${currentPage - 1 < 1 ? 1 : currentPage - 1}">이전페이지</a>
+      <a href="#/page/${currentPage + 1 > 10 ? 10 : currentPage + 1}">다음페이지</a>
+    </div>
+    `);
 
     return result.join(" ");
   } catch (error) {
