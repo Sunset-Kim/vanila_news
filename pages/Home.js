@@ -10,30 +10,36 @@ export default async function Home(page) {
     currentPage,
   });
 
-  console.log(store.state);
-
   try {
-    const newsfeeds = await hackerAPI.getNewsfeeds(page);
+    const newsfeeds = await hackerAPI.getNewsfeeds();
+
+    store.setState({
+      feeds: newsfeeds,
+    });
+
+    const totalLength = store.state.feeds.length;
 
     const result = [];
     result.push("<ul>");
 
-    newsfeeds.forEach((feed) => {
+    const feeds = store.state.feeds;
+
+    for (let i = (currentPage - 1) * 5; i < (currentPage - 1) * 5 + 5; i++) {
       result.push(`
       <li>
-        <a href="#/news/${feed.id}">
-          ${feed.title} (${feed.comments_count})
+        <a href="#/news/${feeds[i].id}">
+          ${feeds[i].title} (${feeds[i].comments_count})
         </a>
       </li>
       `);
-    });
+    }
 
     result.push("</ul>");
 
     result.push(`
     <div>
       <a href="#/page/${currentPage - 1 < 1 ? 1 : currentPage - 1}">이전페이지</a>
-      <a href="#/page/${currentPage + 1 > 10 ? 10 : currentPage + 1}">다음페이지</a>
+      <a href="#/page/${currentPage + 1 > totalLength / 5 ? totalLength / 5 : currentPage + 1}">다음페이지</a>
     </div>
     `);
 
