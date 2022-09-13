@@ -2,15 +2,15 @@ import Ajax from "./ajax";
 
 class HackerAPIService {
   #BASE_URL = "https://api.hnpwa.com/v0";
-  #NEWS_URL = `${this.#BASE_URL}/news/1.json`;
+  #NEWS_URL = (page) => `${this.#BASE_URL}/news/${page}.json`;
   #ITEMS_URL = (id) => `${this.#BASE_URL}/item/${id}.json`;
 
   constructor(ajax) {
     this.ajax = ajax;
   }
 
-  async getNewsfeeds() {
-    return await this.ajax.send("get", this.#NEWS_URL);
+  async getNewsfeeds(page = 1) {
+    return await this.ajax.send("get", this.#NEWS_URL(page));
   }
 
   async getNewsItem(id) {
