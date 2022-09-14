@@ -5,6 +5,17 @@ export default async function Detail(id) {
   const newsItem = await hackerAPI.getNewsItem(id);
 
   const comments = makeComments(newsItem.comments);
+  store.setState({
+    feeds: store.state.feeds.map((feed) => {
+      console.log(feed.id == id);
+      if (feed.id == id) {
+        feed.isRead = true;
+      }
+      return feed;
+    }),
+  });
+
+  console.log(store);
 
   return `
   <div class="bg-gray-800 mx-auto mb-4 px-2 py-1 sm:px-6 lg:px-8 xl:px-10">
@@ -77,8 +88,6 @@ function makeComments(commentsList, called = 0) {
 
     result.push(comment);
   }
-
-  console.log(result);
 
   return result.join("");
 }

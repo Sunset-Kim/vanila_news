@@ -13,8 +13,12 @@ export default async function Home(page) {
   try {
     if (!store.state.feeds) {
       const newsfeeds = await hackerAPI.getNewsfeeds();
+
       store.setState({
-        feeds: newsfeeds,
+        feeds: newsfeeds.map((feed) => ({
+          ...feed,
+          isRead: false,
+        })),
       });
     }
 
@@ -63,18 +67,22 @@ export default async function Home(page) {
     const feeds = store.state.feeds;
 
     for (let i = (currentPage - 1) * 5; i < (currentPage - 1) * 5 + 5; i++) {
+      const feed = feeds[i];
+
       newsList.push(`
       <li class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
         
-          <a class="block p-8 hover:bg-indigo-50 transition-colors" href="#/news/${feeds[i].id}">
+          <a class="block ${feed.isRead ? "bg-red-50" : ""} p-8 hover:bg-indigo-50 transition-colors" href="#/news/${
+        feed.id
+      }">
           
             <p class="uppercase tracking-wide text-base text-indigo-500 font-semibold">
-              ${feeds[i].title} (${feeds[i].comments_count})
+              ${feed.title} (${feed.comments_count})
             </p>
             
             <div class="flex gap-2 mt-2 items-center"> 
-              <p class="text-slate-600">${feeds[i].user}</p>
-              <p class="text-slate-500 font-light">${feeds[i].time_ago}</p>
+              <p class="text-slate-600">${feed.user}</p>
+              <p class="text-slate-500 font-light">${feed.time_ago}</p>
             </div>
             
           </a>
