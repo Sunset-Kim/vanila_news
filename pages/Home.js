@@ -21,7 +21,7 @@ export default async function Home(page) {
     const totalLength = store.state.feeds.length;
     const newsList = [];
     let template = `
-    <div class="min-h-screen bg-gray-50">      
+    
         <div class="bg-gray-800 mx-auto mb-4 px-2 py-1 sm:px-6 lg:px-8 xl:px-10">
           <h1 class="text-white text-2xl	 font-bold">Hacker News</h1>
         </div>
@@ -58,7 +58,7 @@ export default async function Home(page) {
           
         </div>
 
-    </div>`;
+    `;
 
     const feeds = store.state.feeds;
 
