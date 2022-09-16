@@ -2,7 +2,9 @@ import Detail from "../pages/Detail";
 import Home from "../pages/Home";
 
 export default class HashRouter {
-  constructor(container) {
+  container: HTMLElement;
+
+  constructor(container: HTMLElement) {
     this.container = container;
 
     window.addEventListener("hashchange", () => {
@@ -15,7 +17,7 @@ export default class HashRouter {
 
     if (!slug[1] || slug[1] === "page") {
       console.log("page", slug[2]);
-      dom.innerHTML = await Home(slug[2]);
+      dom.innerHTML = await Home();
     } else if (slug[1] === "news") {
       dom.innerHTML = await Detail(slug[2]);
     }
