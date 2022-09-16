@@ -6,7 +6,7 @@ export const store = {
     feeds: undefined,
   }),
 
-  setState(newState) {
+  setState(newState: any) {
     console.log("new", newState);
     for (const [key, value] of Object.entries(newState)) {
       this.state[key] = value;
