@@ -1,9 +1,10 @@
 class Ajax {
+  ajax: XMLHttpRequest;
   constructor() {
     this.ajax = new XMLHttpRequest();
   }
 
-  async send(method, url) {
+  async send(method: string, url: string) {
     return new Promise((resolve, reject) => {
       this.ajax.open(method, url);
       this.ajax.onload = () => resolve(JSON.parse(this.ajax.response));

@@ -3,7 +3,7 @@ import { store } from "../store/store";
 
 const hackerAPI = HackerAPIService;
 
-export default async function Home(page) {
+export default async function Home() {
   const currentPage = Number(location.hash.split("/")[2]) || 1;
 
   store.setState({
@@ -91,16 +91,20 @@ export default async function Home(page) {
     }
 
     template = template.replace("{{__news_feed__}}", newsList.join(""));
-    template = template.replace("{{__prev_page__}}", store.state.currentPage > 1 ? store.state.currentPage - 1 : 1);
+    template = template.replace(
+      "{{__prev_page__}}",
+      store.state.currentPage > 1 ? String(store.state.currentPage - 1) : String(1)
+    );
     template = template.replace(
       "{{__next_page__}}",
       store.state.currentPage >= totalLength / 5 ? totalLength / 5 : store.state.currentPage + 1
     );
     template = template.replace("{{__current_page__}}", store.state.currentPage);
-    template = template.replace("{{__total_page__}}", totalLength / 5);
+    template = template.replace("{{__total_page__}}", String(totalLength / 5));
 
     return template;
   } catch (error) {
     console.log("navigate 500");
+    return "";
   }
 }
