@@ -1,5 +1,36 @@
 import Ajax from "./ajax";
 
+interface NewsFeed {
+  id: number;
+  title: string;
+  points: number;
+  user: string;
+  time: number;
+  time_ago: string;
+  comments_count: number;
+  type: string;
+  url: string;
+  domain: string;
+}
+
+interface NewsItem {
+  id: number;
+  title: string;
+  points: number | null;
+  user: string | null;
+  time: number;
+  time_ago: string;
+  content: string;
+  deleted?: boolean;
+  dead?: boolean;
+  type: string;
+  url?: string;
+  domain?: string;
+  comments: NewsItem[]; // Comments are items too
+  level: number;
+  comments_count: number;
+}
+
 class HackerAPIService {
   #BASE_URL = "https://api.hnpwa.com/v0";
   #NEWS_URL = `${this.#BASE_URL}/news/1.json`;
@@ -10,11 +41,11 @@ class HackerAPIService {
     this.ajax = ajax;
   }
 
-  async getNewsfeeds() {
+  async getNewsfeeds(): Promise<NewsFeed[]> {
     return await this.ajax.send("get", this.#NEWS_URL);
   }
 
-  async getNewsItem(id: number) {
+  async getNewsItem(id: number): Promise<NewsItem> {
     return await this.ajax.send("get", this.#ITEMS_URL(id));
   }
 }
