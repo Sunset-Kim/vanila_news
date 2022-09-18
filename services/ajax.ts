@@ -4,7 +4,7 @@ class Ajax {
     this.ajax = new XMLHttpRequest();
   }
 
-  async send(method: string, url: string) {
+  async send<T>(method: string, url: string): Promise<T> {
     return new Promise((resolve, reject) => {
       this.ajax.open(method, url);
       this.ajax.onload = () => resolve(JSON.parse(this.ajax.response));
