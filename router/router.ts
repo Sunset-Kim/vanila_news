@@ -1,25 +1,43 @@
-import Detail from "../pages/Detail";
-import Home from "../pages/Home";
+import View from "../pages/View";
 
+interface RouteInfo {
+  path: string;
+  page: View;
+}
 export default class HashRouter {
-  container: HTMLElement;
+  routeTable: RouteInfo[];
+  defaultRoute: RouteInfo | null;
 
-  constructor(container: HTMLElement) {
-    this.container = container;
+  constructor() {
+    window.addEventListener("hashchange", this.route.bind(this));
 
-    window.addEventListener("hashchange", () => {
-      this.render(location.hash, this.container);
+    this.routeTable = [];
+    this.defaultRoute = null;
+  }
+
+  addRouterPath(path: string, page: View) {
+    this.routeTable.push({
+      path,
+      page,
     });
   }
 
-  async render(path = "/", dom = this.container) {
-    const slug = path.split("/");
+  setDefaultPage(page: View) {
+    this.defaultRoute = { path: "", page };
+  }
 
-    if (!slug[1] || slug[1] === "page") {
-      console.log("page", slug[2]);
-      dom.innerHTML = await Home();
-    } else if (slug[1] === "news") {
-      dom.innerHTML = await Detail(slug[2]);
+  route() {
+    const routePath = location.hash;
+
+    if (routePath === "" && this.defaultRoute) {
+      this.defaultRoute.page.render();
+    }
+
+    for (const routeInfo of this.routeTable) {
+      if (routePath.indexOf(routeInfo.path) >= 0) {
+        routeInfo.page.render();
+        break;
+      }
     }
   }
 }

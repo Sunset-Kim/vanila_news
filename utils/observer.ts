@@ -1,3 +1,5 @@
+import { AnyObject } from "../types/common";
+
 let currentObserver: any = null;
 
 const observe = (fn: () => void) => {
@@ -6,7 +8,7 @@ const observe = (fn: () => void) => {
   currentObserver = null;
 };
 
-const observable = (obj: { [key: string]: any }) => {
+const observable = <T extends AnyObject>(obj: T) => {
   Object.keys(obj).forEach((key) => {
     let _value = obj[key];
     const observers = new Set<() => void>();

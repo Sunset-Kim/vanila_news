@@ -1,6 +1,13 @@
+import DetailPage from "./pages/Detail/Detail";
+import Home from "./pages/Home/Home";
 import HashRouter from "./router/router";
 
-const root = document.getElementById("app") as HTMLDivElement;
-const router = new HashRouter(root);
+const router = new HashRouter();
+const home = new Home("app");
+const detail = new DetailPage("app");
 
-router.render(location.hash);
+router.setDefaultPage(home);
+router.addRouterPath("/page/", home);
+router.addRouterPath("/news/", detail);
+
+router.route();
