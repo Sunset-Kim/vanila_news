@@ -2,19 +2,22 @@ import { NewsFeed } from "../services/hackerAPI";
 
 import { observable } from "../utils/observer";
 
+export interface Feed extends NewsFeed {
+  isRead: boolean;
+}
 interface Store {
-  currentPage?: null | number;
-  feeds?: (NewsFeed & {
-    isRead: boolean;
-  })[];
+  currentPage: number;
+  feeds?: Feed[];
 }
 
 export const store = {
-  state: observable<Store>({}),
+  state: observable<Store>({
+    currentPage: 1,
+  }),
 
-  setState(newState: Store) {
-    for (const [key, value] of Object.entries(newState)) {
-      this.state[key as keyof Store] = value;
+  setState(newState: Partial<Store>) {
+    for (const [key, value] of Object.entries({ ...this.state, ...newState })) {
+      this.state[key] = value;
     }
   },
 };
