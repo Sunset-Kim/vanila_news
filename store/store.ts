@@ -1,15 +1,20 @@
+import { NewsFeed } from "../services/hackerAPI";
+
 import { observable } from "../utils/observer";
 
-export const store = {
-  state: observable({
-    currentPage: 1,
-    feeds: undefined,
-  }),
+interface Store {
+  currentPage?: null | number;
+  feeds?: (NewsFeed & {
+    isRead: boolean;
+  })[];
+}
 
-  setState(newState: any) {
-    console.log("new", newState);
+export const store = {
+  state: observable<Store>({}),
+
+  setState(newState: Store) {
     for (const [key, value] of Object.entries(newState)) {
-      this.state[key] = value;
+      this.state[key as keyof Store] = value;
     }
   },
 };

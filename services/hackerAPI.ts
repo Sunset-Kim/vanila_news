@@ -1,6 +1,6 @@
 import Ajax from "./ajax";
 
-interface NewsFeed {
+export interface NewsFeed {
   id: number;
   title: string;
   points: number;
@@ -13,7 +13,7 @@ interface NewsFeed {
   domain: string;
 }
 
-interface NewsItem {
+export interface NewsItem {
   id: number;
   title: string;
   points: number | null;
@@ -31,7 +31,7 @@ interface NewsItem {
   comments_count: number;
 }
 
-class HackerAPIService {
+export default class HackerAPIService {
   #BASE_URL = "https://api.hnpwa.com/v0";
   #NEWS_URL = `${this.#BASE_URL}/news/1.json`;
   #ITEMS_URL = (id: number) => `${this.#BASE_URL}/item/${id}.json`;
@@ -49,5 +49,3 @@ class HackerAPIService {
     return await this.ajax.send("get", this.#ITEMS_URL(id));
   }
 }
-
-export default new HackerAPIService(new Ajax());
