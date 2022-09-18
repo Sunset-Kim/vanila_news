@@ -14,18 +14,17 @@ export default async function Home() {
     if (!store.state.feeds) {
       const newsfeeds = await hackerAPI.getNewsfeeds();
 
-
       store.setState({
         feeds: newsfeeds.map((feed) => ({
           ...feed,
           isRead: false,
         })),
+      });
     }
 
     const totalLength = store.state.feeds.length;
-    const newsList = [];
+    const newsList = <string[]>[];
     let template = `
-    
         <div class="bg-gray-800 mx-auto mb-4 px-2 py-1 sm:px-6 lg:px-8 xl:px-10">
           <h1 class="text-white text-2xl	 font-bold">Hacker News</h1>
         </div>
@@ -67,12 +66,9 @@ export default async function Home() {
     const feeds = store.state.feeds;
 
     for (let i = (currentPage - 1) * 5; i < (currentPage - 1) * 5 + 5; i++) {
-
       const feed = feeds[i];
-
       newsList.push(`
       <li class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-        
           <a class="block ${feed.isRead ? "bg-red-50" : ""} p-8 hover:bg-indigo-50 transition-colors" href="#/news/${
         feed.id
       }">
