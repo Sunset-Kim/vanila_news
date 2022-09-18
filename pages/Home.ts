@@ -14,12 +14,12 @@ export default async function Home() {
     if (!store.state.feeds) {
       const newsfeeds = await hackerAPI.getNewsfeeds();
 
+
       store.setState({
         feeds: newsfeeds.map((feed) => ({
           ...feed,
           isRead: false,
         })),
-      });
     }
 
     const totalLength = store.state.feeds.length;
@@ -67,6 +67,7 @@ export default async function Home() {
     const feeds = store.state.feeds;
 
     for (let i = (currentPage - 1) * 5; i < (currentPage - 1) * 5 + 5; i++) {
+
       const feed = feeds[i];
 
       newsList.push(`
