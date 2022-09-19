@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "![데모](/images/demo.gif) ![스크린샷](/images/1.png)",
   "source": "index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --public-url='/vanila_news'",
+    "start": "parcel"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,7 @@
   "homepage": "https://github.com/Sunset-Kim/vanila_news#readme",
   "dependencies": {},
   "devDependencies": {
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "parcel": "^2.7.0"
   }
 }
