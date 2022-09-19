@@ -1,0 +1,23 @@
+{
+  "name": "vanila_news",
+  "version": "1.0.0",
+  "description": "![데모](/images/demo.gif) ![스크린샷](/images/1.png)",
+  "source": "index.html",
+  "scripts": {
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sunset-Kim/vanila_news.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sunset-Kim/vanila_news/issues"
+  },
+  "homepage": "https://github.com/Sunset-Kim/vanila_news#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
+  }
+}
